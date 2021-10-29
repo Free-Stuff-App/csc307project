@@ -30,7 +30,7 @@ const products = {
           contactInfo: 'bruno@mail.com'
        }
     ]
- }
+}
  
  
 const express = require('express');
@@ -42,10 +42,21 @@ app.use(cors());
 
 app.use(express.json());
 
-const userServices = require('./database');
+//const userServices = require('/Users/boone/Desktop/csc307project/database/database.js');
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
+});
+
+app.patch('/products/:id', (req, res) => {
+    const id = req.params['id']
+    let result = findProductById(id);
+    if (result === undefined || result.length == 0)
+        res.status(404).send('Resource not found.');
+    else {
+        patchProduct(id);
+        res.status(204).end();
+    }
 });
 
 app.post('/products', (req, res) => {
@@ -79,6 +90,14 @@ function deleteProduct(id) {
     for (let [i, item] of products['productsList'].entries()) {
         if (item.id == id)
             products['productsList'].splice(i, 1);
+    }
+}
+
+
+function patchProduct(id) {
+    for (let [i, item] of products['productsList'].entries()) {
+        if (item.id == id)
+            console.log("Product to patch", item.id)
     }
 }
 
