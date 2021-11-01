@@ -1,25 +1,54 @@
-import React, {useState} from 'react';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-function Cards(props) {
+import React from 'react';
+import { Image, Card, Row, Col } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-
-    return (
-
-        <Card style={{ width: '18rem' }}>
-        <Card.Img variant="top" src="holder.js/100px180" />
-        <Card.Body>
-            <Card.Title>Card Title</Card.Title>
-            <Card.Text>
-            Some quick example text to build on the card title and make up the bulk of
-            the card's content.
-            </Card.Text>
-            <Button variant="primary">Go somewhere</Button>
-        </Card.Body>
-        </Card>
-    );
-
+const grid = {
+    width: "4rem",
+    minHeight: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
 }
 
-export default Cards
+const box = {
+    width: '200px',
+    height: '200px',
+};
+
+function RenderCards(props) {
+
+    const cards = props.productData.map((product, index) => {
+        return (
+        <Row className="g-4">
+            {Array.from({ length: 1 }).map((_, idx) => (
+            <Col>
+                <Card key={index} className="box">
+                    <Card.Img style = {box} variant="top" src="holder.js/250x250" src={product.image}/>
+                    <Card.Body>
+                        <Card.Header>{product.title}</Card.Header>
+                        <Card.Text>{product.description}</Card.Text>
+                    </Card.Body>
+                </Card>
+            </Col>
+            ))}
+        </Row>
+        );
+    });
+
+    return (
+        <div>
+            {cards}
+        </div>
+    );
+}
+
+function Cards(props) {
+    return (
+        <div style = {grid}>
+            <RenderCards productData = {props.productData} />
+        </div>
+    );
+}
+    
+
+export default Cards;

@@ -10,7 +10,8 @@ const products = {
           description: 'cool skateboard',
           location: 'San Luis Obispo, CA',
           category: 'fun',
-          contactInfo: 'boone@mail.com'
+          contactInfo: 'boone@mail.com',
+          image:"https://i.pinimg.com/originals/03/ce/01/03ce015ea85dc84a17fb4c24a96cd87e.jpg",
        },
        {
           id : 'abc123', 
@@ -18,7 +19,9 @@ const products = {
           description: 'shoots bbs',
           location: 'Los Angeles, CA',
           category: 'fun',
-          contactInfo: 'ryan@mail.com'
+          contactInfo: 'ryan@mail.com',
+          image:"https://i.pinimg.com/originals/03/ce/01/03ce015ea85dc84a17fb4c24a96cd87e.jpg",
+
           
        },
        {
@@ -27,7 +30,8 @@ const products = {
           description: 'a metal fork',
           location: 'San Luis Obispo, CA',
           category: 'cooking',
-          contactInfo: 'bruno@mail.com'
+          contactInfo: 'bruno@mail.com',
+          image:"https://i.pinimg.com/originals/03/ce/01/03ce015ea85dc84a17fb4c24a96cd87e.jpg"
        }
     ]
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Form from './Form';
 import Cards from './Card';
 import axios from 'axios';
@@ -13,6 +13,26 @@ import {
 function App() {
 
     const[products, setProducts] = useState([])
+
+    useEffect(() => {
+        fetchAll().then( result => {
+          if (result)
+              setProducts(result);
+        });
+       }, [] );
+
+    async function fetchAll(){
+        try {
+           const response = await axios.get('http://localhost:5000/products');
+           return response.data.productsList;     
+        }
+        catch (error){
+           //We're not handling errors. Just logging into the console.
+           console.log(error); 
+           return false;         
+        }
+      }  
+    
 
     function addProduct(product) { 
         makePostCall(product).then( result => {
@@ -54,7 +74,7 @@ function App() {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="/products">Submit a product</Link>
+                            <Link to="/submit">Submit a product</Link>
                         </li>
         
                     </ul>
@@ -62,12 +82,13 @@ function App() {
 
                 <Switch>
 
-                    <Route path="/products">
+                    <Route path="/submit">
                         <Form handleSubmit={addProduct} />
                     </Route>
 
                     <Route path="/">
-                        <Cards/ >
+                        <Cards productData={products}/>
+
                     </Route>
 
                 </Switch>
