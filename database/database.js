@@ -2,28 +2,48 @@
 // This file will do database operations
 
 const mongoose = require("mongoose");
-const productModel = require("./productSchema");
-//const userModel = require("./userSchema");
+const ProductSchema = require("./productSchema");
+const UserSchema = require("./userSchema");
+const process = require("process");
 const dotenv = require("dotenv");
 dotenv.config();
 
-mongoose
-	.connect(
-		//"mongodb+srv://"+"rdmaier"+":"+"<password>"+"@freestuffapp.dycx2.mongodb.net/"+"myFirstDatabase"+"?retryWrites=true&w=majority"
-		"mongodb+srv://" +
-			process.env.MONGO_USER +
-			":" +
-			process.env.MONGO_PWD +
-			"@freestuffapp.dycx2.mongodb.net/" +
-			process.env.MONGO_DB +
-			"?retryWrites=true&w=majority",
-		//'mongodb://localhost:27017/users',
-		{
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
+let conn;
+
+function setConnection(newConn) {
+	return (conn = newConn);
+}
+
+function getConnection() {
+	if (!conn) {
+		if (process.argv.includes("--prod")) {
+			conn = mongoose.createConnection(
+				//"mongodb+srv://"+"rdmaier"+":"+"<password>"+"@freestuffapp.dycx2.mongodb.net/"+"myFirstDatabase"+"?retryWrites=true&w=majority"
+				"mongodb+srv://" +
+					process.env.MONGO_USER +
+					":" +
+					process.env.MONGO_PWD +
+					"@freestuffapp.dycx2.mongodb.net/" +
+					process.env.MONGO_DB +
+					"?retryWrites=true&w=majority",
+				//'mongodb://localhost:27017/users',
+				{
+					useNewUrlParser: true,
+					useUnifiedTopology: true,
+				}
+			);
+		} else {
+			conn = mongoose.createConnection(
+				"mongodb://localhost:27017/users",
+				{
+					useNewUrlParser: true,
+					useUnifiedTopology: true,
+				}
+			);
 		}
-	)
-	.catch((error) => console.log(error));
+	}
+	return conn;
+}
 
 let prodCriteria = [
 	"title",
@@ -45,6 +65,7 @@ let prodCriteria = [
  * ["Toy", "", "", "", "Dave"] // returns all title = "Toy" products posted by Dave
  */
 async function getProducts(criteria) {
+	const productModel = getConnection().model("Product", ProductSchema);
 	let products = await productModel.find();
 	let result = filterProducts(products, criteria);
 	return result;
@@ -61,8 +82,8 @@ async function filterProducts(products, criteria) {
 		console.log(prod);
 		for (let i = 0; i < criteria.length; i++) {
 			let crit = criteria[i];
-			if(!(crit==="")) {
-				prodValue = prod.find({ prodCriteria[i]: });
+			if (!(crit === "")) {
+				//prodValue = prod.find({ prodCriteria[i]: });
 			}
 		}
 	});
@@ -70,6 +91,7 @@ async function filterProducts(products, criteria) {
 }
 
 async function getUsers() {
+	const userModel = getConnection().model("User", UserSchema);
 	let users = await userModel.find();
 	return users;
 }
@@ -79,6 +101,7 @@ async function getUsers() {
  * @param {*} product
  */
 async function addProduct(product) {
+	const productModel = getConnection().model("Product", ProductSchema);
 	try {
 		const prodToAdd = new productModel(product);
 		const savedProd = await prodToAdd.save();
@@ -90,6 +113,7 @@ async function addProduct(product) {
 }
 
 async function addUser(user) {
+	const userModel = getConnection().model("User", UserSchema);
 	try {
 		const userToAdd = new userModel(user);
 		const savedUser = await userToAdd.save();
@@ -101,6 +125,7 @@ async function addUser(user) {
 }
 
 async function deleteProduct(id) {
+	const productModel = getConnection().model("Product", ProductSchema);
 	try {
 		return await productModel.findByIdAndDelete(id);
 	} catch (error) {
@@ -110,6 +135,7 @@ async function deleteProduct(id) {
 }
 
 async function deleteUser(id) {
+	const userModel = getConnection().model("User", UserSchema);
 	try {
 		return await userModel.findByIdAndDelete(id);
 	} catch (error) {
@@ -117,3 +143,10 @@ async function deleteUser(id) {
 		return undefined;
 	}
 }
+
+exports.getProducts = getProducts;
+exports.addProduct = addProduct;
+exports.deleteProduct = deleteProduct;
+exports.getUser = getUser;
+exports.addUser = addUser;
+exports.deleteUser = deleteUser;
