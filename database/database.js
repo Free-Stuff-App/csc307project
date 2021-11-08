@@ -3,7 +3,7 @@
 
 const mongoose = require("mongoose");
 const ProductSchema = require("./productSchema");
-const UserSchema = require("./userSchema");
+// const UserSchema = require("./userSchema");
 const process = require("process");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -147,6 +147,8 @@ async function deleteUser(id) {
 exports.getProducts = getProducts;
 exports.addProduct = addProduct;
 exports.deleteProduct = deleteProduct;
-exports.getUser = getUser;
+exports.getUsers = getUsers;
 exports.addUser = addUser;
 exports.deleteUser = deleteUser;
+
+exports.setConnection = setConnection;
