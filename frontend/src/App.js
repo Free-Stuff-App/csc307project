@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Form from './Form';
 import Cards from './Card';
+import NavBar from './NavBar';
 import axios from 'axios';
 import {
     BrowserRouter as Router,
@@ -68,16 +69,17 @@ function App() {
     return (
         <Router>
             <div>
+                <NavBar/>
                 <nav>
                     <ul>
                         <li>
-                            <Link to="/">Home</Link>
+                            <Link to="/">Home</Link>    
                         </li>
                         <li>
                             <Link to="/submit">Submit a product</Link>
-                        </li>
-        
+                        </li>                        
                     </ul>
+                    
                 </nav>
 
                 <Switch>
@@ -88,7 +90,7 @@ function App() {
 
                     <Route path="/">
                         <Cards productData={products}/>
-
+                        
                     </Route>
 
                 </Switch>
