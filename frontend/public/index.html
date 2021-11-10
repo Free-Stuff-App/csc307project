@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
+	<head>
+		<link rel="stylesheet" href="/PageStyle.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#000000" />
+		<meta
+			name="description"
+			content="Web site created using create-react-app"
+		/>
+
+		<!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
+
+		<!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -24,12 +23,112 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
+		<title>The Free Stuff App</title>
+	</head>
+	<body>
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		<div id="root"></div>
+
+		<div id="inputs" class="frame">
+			<div class="header">Categories</div>
+			<div class="indentedlist">
+				<tr>
+					<select style="width: 110px; height: 40px">
+						<option value="furniture">Furniture</option>
+						<option value="appliances">Appliances</option>
+						<option value="household">Household</option>
+						<option value="electronics">Electronics</option>
+						<option value="gardening">Gardening</option>
+						<option value="automotive">Automotive</option>
+						<option value="sporting">Sporting</option>
+						<option value="books">Books</option>
+						<option value="gaming">Gaming</option>
+					</select>
+				</tr>
+			</div>
+			<br />
+			<div class="header">Miles from Location</div>
+			<div class="indentedlist">
+				<tr>
+					<td>Miles:</td>
+					<td>
+						<input
+							type="number"
+							style="width: 90px; height: 25px"
+						/>
+					</td>
+				</tr>
+				<tr>
+					<td>From ZIP:</td>
+					<td>
+						<input
+							type="number"
+							style="width: 90px; height: 25px"
+						/>
+					</td>
+				</tr>
+			</div>
+			<br />
+			<div class="header">Date Posted</div>
+			<div class="indentedlist">
+				<tr>
+					<select style="width: 130px; height: 40px">
+						<option value="24hr">Past 24 Hours</option>
+						<option value="week">Past Week</option>
+						<option value="2week">Past 2 Weeks</option>
+						<option value="month">Past Month</option>
+						<option value="year">Past Year</option>
+					</select>
+				</tr>
+			</div>
+			<br />
+			<div class="header">Price</div>
+			<div class="indentedlist">
+				<tr>
+					<td>Min:</td>
+					<td>
+						<input
+							type="number"
+							style="width: 90px; height: 25px"
+						/>
+					</td>
+				</tr>
+				<tr>
+					<td>Max:</td>
+					<td>
+						<input
+							type="number"
+							style="width: 90px; height: 25px"
+						/>
+					</td>
+				</tr>
+			</div>
+			<br />
+			<div class="header">Condition</div>
+			<div class="indentedlist">
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td>New</td>
+				</tr>
+				<br />
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td>Like New</td>
+				</tr>
+				<br />
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td>Good</td>
+				</tr>
+				<br />
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td>Used</td>
+				</tr>
+				<br />
+			</div>
+		</div>
+		<!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -38,6 +137,6 @@
 
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+    --></body>
 </html>
+
