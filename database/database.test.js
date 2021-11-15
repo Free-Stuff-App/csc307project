@@ -42,6 +42,34 @@ beforeEach(async () => {
 		image: "",
 	};
 	let result = new productModel(dummyProduct);
+    await result.save();
+    
+    dummyProduct = {
+		title: "pianting",
+		datePosted: "11/10/21",
+		//productID: "",
+		categories: ["art", "piant", "good", "collor"],
+		description: "dont spel god but i piant good",
+		condition: "collorful",
+		location: "Oceanside, CA",
+		seller: "pablo del bosque",
+		image: "",
+	};
+	result = new productModel(dummyProduct);
+    await result.save();
+    
+    dummyProduct = {
+		title: "opainting",
+		datePosted: "11/10/21",
+		//productID: "",
+		categories: ["artsy", "opaint", "great", "colorful"],
+		description: "should show up for a paintint title search",
+		condition: "beautiful",
+		location: "Cupertino, CA",
+		seller: "itay rabinovic",
+		image: "",
+	};
+	result = new productModel(dummyProduct);
 	await result.save();
 
 	dummyProduct = {
@@ -53,6 +81,20 @@ beforeEach(async () => {
 		condition: "Pretty good for being old",
 		location: "Marin, CA",
 		seller: "Darnel Simons",
+		image: "",
+	};
+	result = new productModel(dummyProduct);
+	await result.save();
+
+	dummyProduct = {
+		title: "Painting",
+		datePosted: "11/8/21",
+		//productID: "",
+		categories: ["art", "paint", "new", "head"],
+		description: "drew a picture of my head, kinda cool",
+		condition: "new",
+		location: "Ventura, CA",
+		seller: "Maxie Simons",
 		image: "",
 	};
 	result = new productModel(dummyProduct);
@@ -76,7 +118,7 @@ beforeEach(async () => {
 		title: "Brownies",
 		datePosted: "4/31/19",
 		productID: "tyu666",
-		categories: ["food","tasty","homemade","sweet","chocolate"],
+		categories: ["food", "tasty", "homemade", "sweet", "chocolate"],
 		description: "Just some regular brownies that I made",
 		condition: "fresh and warm",
 		location: "Mt Shasta, CA",
@@ -97,8 +139,29 @@ afterEach(async () => {
 // 	expect(users.length).toBeGreaterThan(0);
 // });
 
+// ["title","datePosted", "productID", "categories", "description", "condition", "seller"]
 test("Fetching all products", async () => {
-	const users = await dbServices.getProducts([]);
-	expect(users).toBeDefined();
-	expect(users.length).toBeGreaterThan(0);
+	const prods = await dbServices.getProducts(["", "", "", "", "", "", ""]);
+	expect(prods).toBeDefined();
+	expect(prods.length).toBeGreaterThan(0);
+});
+
+test("Fetching products by name", async () => {
+	const prodName = "Painting";
+	const prods = await dbServices.getProducts([
+		"",
+		"Painting",
+		"",
+		"",
+		"",
+		"",
+		"",
+	]);
+	expect(prods).toBeDefined();
+    expect(prods.length).toBeGreaterThan(0);
+    let titles = [];
+    let expectedTitles = ["Painting", "pianting", "opainting"];
+    prods.forEach((prod) => titles.push(prod.title));
+    console.log(titles);
+    expectedTitles.forEach((et) => expect(titles.includes(et)).toBe(true));
 });
