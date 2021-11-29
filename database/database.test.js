@@ -65,7 +65,7 @@ beforeEach(async () => {
 	result = new userModel(dummyUser);
 	await result.save();
 
-	//
+	// // // // // // // // // // // // // // // // // // // // // 
 
 	let dummyProduct = {
 		title: "hair",
@@ -75,6 +75,19 @@ beforeEach(async () => {
 		condition: "Used",
 		location: "Bakersfield",
 		seller: "Barry McKockiner",
+		image: "",
+	};
+	result = new productModel(dummyProduct);
+	await result.save();
+
+	dummyProduct = {
+		title: "painting",
+		datePosted: "11/5/21",
+		category: "Gardening",
+		description: "its a painting but for gardening",
+		condition: "Like New",
+		location: "Bakersfield",
+		seller: "Larry McKockiner",
 		image: "",
 	};
 	result = new productModel(dummyProduct);
@@ -176,15 +189,15 @@ afterEach(async () => {
 
 // ["title","datePosted", "productID", "categories", "description", "condition", "seller"]
 test("Fetching all products", async () => {
-	const prods = await dbServices.getProducts(["", "", "", ""]);
+	const prods = await dbServices.getProducts(["", "", "", ""], "");
 	expect(prods).toBeDefined();
 	expect(prods.length).toBeGreaterThan(0);
 });
 
 test("Fetching products by name", async () => {
 	const prodName = "Painting";
-	let expectedTitles = ["Painting", "Painting", "pianting", "opainting"];
-	const prods = await dbServices.getProducts(prodName);
+	let expectedTitles = ["painting", "Painting", "Painting", "pianting", "opainting"];
+	const prods = await dbServices.getProducts(["", "", "", ""], prodName);
 	expect(prods).toBeDefined();
 	expect(prods.length).toBeGreaterThan(0);
 
@@ -199,7 +212,7 @@ test("Fetching products by name", async () => {
 test("Fetching products by description", async () => {
 	const prodDescription = "my head";
 	let expectedTitles = ["Painting", "hair"];
-	const prods = await dbServices.getProducts(prodDescription);
+	const prods = await dbServices.getProducts(["", "", "", ""], prodDescription);
 	expect(prods).toBeDefined();
 	expect(prods.length).toBeGreaterThan(0);
 
@@ -214,7 +227,7 @@ test("Fetching products by description", async () => {
 test("Fetching products by seller", async () => {
 	const prodSearch = "Simons";
 	let expectedTitles = ["Painting", "Brownies", "Painting"];
-	const prods = await dbServices.getProducts(prodSearch);
+	const prods = await dbServices.getProducts(["", "", "", ""], prodSearch);
 	expect(prods).toBeDefined();
 	expect(prods.length).toBeGreaterThan(0);
 
@@ -230,7 +243,7 @@ test("Fetching products by seller", async () => {
 test("Fetching products by condition", async () => {
 	const condition = "Used";
 	let expectedTitles = ["hair", "pianting"];
-	const prods = await dbServices.getProducts(["", condition, "", ""]);
+	const prods = await dbServices.getProducts(["", condition, "", ""], "");
 	expect(prods).toBeDefined();
 	expect(prods.length).toBeGreaterThan(0);
 
@@ -244,7 +257,7 @@ test("Fetching products by condition", async () => {
 test("Fetching products by category", async () => {
 	const category = "Household";
 	let expectedTitles = ["pianting", "opainting", "Painting", "Painting", "Brownies"];
-	const prods = await dbServices.getProducts(["", "", category, ""]);
+	const prods = await dbServices.getProducts(["", "", category, ""], "");
 	expect(prods).toBeDefined();
 	expect(prods.length).toBeGreaterThan(0);
 
@@ -259,7 +272,7 @@ test("Fetching products by condition and category", async () => {
 	const condition = "New";
 	const category = "Household";
 	let expectedTitles = ["opainting", "Painting"];
-	const prods = await dbServices.getProducts(["", condition, category, ""]);
+	const prods = await dbServices.getProducts(["", condition, category, ""], "");
 	expect(prods).toBeDefined();
 	expect(prods.length).toBeGreaterThan(0);
 
@@ -268,6 +281,50 @@ test("Fetching products by condition and category", async () => {
 	console.log(titles);
 	expect(titles.length).toBe(expectedTitles.length);
 	titles.forEach((t) => expect(expectedTitles.includes(t)).toBe(true));
+});
+
+test("Fetching products by condition and title", async () => {
+	const condition = "New";
+	const search = "pianting";
+	let expectedConditions = ["New", "New"];
+	let expectedTitles = ["Painting", "opainting"];
+	const prods = await dbServices.getProducts(["", condition, "", ""], search);
+	expect(prods).toBeDefined();
+	expect(prods.length).toBeGreaterThan(0);
+
+	let titles = [];
+	let conditions = [];
+	prods.forEach((prod) => titles.push(prod.title));
+	prods.forEach((prod) => conditions.push(prod.condition));
+	// titles = titles.slice(0, expectedTitles.length);
+	// conditions = conditions.slice(0, expectedConditions.length);
+	console.log(titles);
+	expect(titles.length).toBe(expectedTitles.length);
+	expect(conditions.length).toBe(expectedConditions.length);
+	titles.forEach((t) => expect(expectedTitles.includes(t)).toBe(true));
+	conditions.forEach((t) => expect(expectedConditions.includes(t)).toBe(true));
+});
+
+test("Fetching products by category and title", async () => {
+	const category = "Gardening";
+	const search = "pianting";
+	let expectedCategories = ["Gardening"];
+	let expectedTitles = ["painting"];
+	const prods = await dbServices.getProducts(["", "", category, ""], search);
+	expect(prods).toBeDefined();
+	expect(prods.length).toBeGreaterThan(0);
+
+	let titles = [];
+	let categories = [];
+	prods.forEach((prod) => titles.push(prod.title));
+	prods.forEach((prod) => categories.push(prod.category));
+	titles = titles.slice(0, expectedTitles.length);
+	categories = categories.slice(0, expectedCategories.length);
+	console.log(titles);
+	expect(titles.length).toBe(expectedTitles.length);
+	expect(categories.length).toBe(expectedCategories.length);
+	titles.forEach((t) => expect(expectedTitles.includes(t)).toBe(true));
+	categories.forEach((t) => expect(expectedCategories.includes(t)).toBe(true));
 });
 
 test("split test", async () => {
