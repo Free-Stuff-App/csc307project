@@ -45,27 +45,26 @@ function getConnection() {
 	return conn;
 }
 
-async function getProducts(criteria) {
-	// change to accept search and sidebar criteria, filter by sidebar and then searchs
-
-	if (Array.isArray(criteria)) {
-		// it's a sidebar filter
-		return getProductsSidebar(criteria);
-	} else {
-		// it's a search bar filter
-		return getProductsSearch(criteria);
-	}
+/**
+ * Gets and filters products based on the sidebar and search bar inputs
+ * @param {*} sidebarCriteria : array with [“_id”, "condition", "category", "date posted"] included with values
+ * if being filtered for or empty strings if not being filtered for
+ * @param {*} searchCriteria : string representing the search bar input, empty string if nothing searched
+ */
+async function getProducts(sidebarCriteria, searchCriteria) {
+	// change to accept search and sidebar criteria, filter by sidebar and then search bar
+	let products = await getProductsSidebar(sidebarCriteria);
+	return filterProductsSearch(products, searchCriteria);
 }
 
 // criteriaList = [“_id”, "condition", "category", "date posted"]
 async function getProductsSidebar(criteriaList) {
 	const productModel = getConnection().model("Product", ProductSchema);
-	let products;
 	let filter = 0;
 	// if _id not in search criteria, filter by other criteria
 	if (!(criteriaList[0] === "")) {
 		// return product with that _id
-		return productModel.findById(criteriaList[0]);
+		return await productModel.findById(criteriaList[0]);
 	}
 	let find = "";
 	let q = {};
@@ -82,6 +81,7 @@ async function getProductsSidebar(criteriaList) {
 		filter = 1;
 	}
 
+	let products;
 	if (filter === 1) products = await productModel.find(q);
 	else products = await productModel.find();
 
@@ -96,13 +96,9 @@ function filterByDate(products, date) {
 	// to be implemented next
 }
 
-async function getProductsSearch(searchString) {
-	const productModel = getConnection().model("Product", ProductSchema);
-	products = await productModel.find();
-	return filterProductsSearch(products, searchString);
-}
-
 function filterProductsSearch(products, searchString) {
+	// verify that there search criteria exists
+	if (searchString === "") return products;
 	// break search into individual words
 	let searchWords = searchString.split(" ");
 	// list of {product, score} tuples
