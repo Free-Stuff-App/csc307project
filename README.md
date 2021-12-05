@@ -1,6 +1,6 @@
 # Intro to Software Engineering Fall 2021 Project
 
-![test](https://github.com/Free-Stuff-App/csc307project/github/workflows/node.js.yml)
+[![freestuffapp CI](https://github.com/Free-Stuff-App/csc307project/actions/workflows/node.js.yml/badge.svg)](https://github.com/Free-Stuff-App/csc307project/actions/workflows/node.js.yml)
 
 Group project for Intro to Software Engineering, a Craigslist remake using the MERN stack.
 
